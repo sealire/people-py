@@ -1,12 +1,15 @@
 from entity.province import *
 from entity.province_distribution import *
+from entity.city import *
 import uuid
 
-home = {
-    'province': 'F:/people/province.txt',
-    'province_distribution': 'F:/people/province_distribution.txt'
+home = 'F:/git/people-py/resource/'
+dir = home
+file_dir = {
+    'province': dir + 'province.txt',
+    'province_distribution': dir + 'province_distribution.txt',
+    'city': dir + 'city.txt'
 }
-file_dir = home
 
 
 def readProvinces():
@@ -47,9 +50,25 @@ def readProvinceDistributions():
         province_distributions.append(pd)
     return province_distributions
 
+def readCities():
+    cities = list()
+    file_city = open(file_dir['city'], encoding='utf-8')
+    for line in file_city.readlines():
+        line = line.strip()
+        line_data = line.split('\t')
+
+        c = city()
+        c.setId(str(uuid.uuid1()).replace('-', ''))
+        c.setCityName(line_data[0])
+        c.setProvinceName(line_data[1])
+
+        cities.append(c)
+    return cities
+
 
 provinces = readProvinces()
 province_distributions = readProvinceDistributions()
+cities = readCities()
 
-print(len(province_distributions))
+print(len(cities))
 
