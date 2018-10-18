@@ -1,4 +1,10 @@
-class province:
+import uuid
+
+
+class Province:
+    file = ''
+    provinces = list()
+
     def __init__(self):
         self.__id = None
         self.__province_code = None
@@ -42,3 +48,25 @@ class province:
 
     def getCapitalName(self):
         return self.__capital_name
+
+    @classmethod
+    def setFile(cls, file):
+        cls.file = file
+
+    @classmethod
+    def readProvince(cls):
+        if len(Province.provinces) > 0:
+            return Province.provinces
+
+        file_province = open(Province.file, encoding='utf-8')
+        for line in file_province.readlines():
+            line = line.strip()
+            line_data = line.split('\t')
+
+            p = Province()
+            p.setId(str(uuid.uuid1()).replace('-', ''))
+            p.setProvinceName(line_data[0])
+            p.setProvinceShortName(line_data[1])
+
+            Province.provinces.append(p)
+        return Province.provinces

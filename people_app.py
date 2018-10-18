@@ -1,20 +1,31 @@
-from entity.province import *
-from entity.province_distribution import *
-from entity.city import *
-from entity.nation import *
-from entity.nation_distribution import *
-from entity.last_name import *
-from entity.last_name_distribution import *
-from entity.id_number_distribution import *
-import uuid
+from entity.Province import *
+from entity.ProvinceDistribution import *
+from entity.City import *
+from entity.Sex import *
+from entity.AgeDistribution import *
+from entity.Nation import *
+from entity.NationDistribution import *
+from entity.IdNumberDistribution import *
+from entity.LastName import *
+from entity.LastNameDistribution import *
+
+from creater.ProvinceCreater import *
+from creater.CityCreater import *
+from creater.SexCreater import *
+from creater.BirthdayCreater import *
+from creater.NationCreater import *
+from creater.IdNumberCreater import *
+from creater.LastNameCreater import *
 
 home = 'F:/git/people-py/resource/'
 work = 'D:/py/people-py/resource/'
-dir = work
+dir = home
 file_dir = {
     'province': dir + 'province.txt',
     'province_distribution': dir + 'province_distribution.txt',
     'city': dir + 'city.txt',
+    'sex': dir + 'sex.txt',
+    'age_distribution': dir + 'age_distribution.txt',
     'nation': dir + 'nation.txt',
     'nation_distribution': dir + 'nation_distribution.txt',
     'last_name': dir + 'last_name.txt',
@@ -25,226 +36,60 @@ file_dir = {
     'female_perfect': dir + 'female_perfect.txt',
 }
 
+Province.setFile(file_dir['province'])
+provinces = Province.readProvince()
+ProvinceDistribution.setFile(file_dir['province_distribution'])
+ProvinceDistribution.setProvinces(provinces)
+provinceDs = ProvinceDistribution.readDistribution()
+provinceCreater = ProvinceCreater(provinceDs)
+province = provinceCreater.creater()
+print(province)
 
-def readProvinces():
-    provinces = list()
-    file_province = open(file_dir['province'], encoding='utf-8')
-    for line in file_province.readlines():
-        line = line.strip()
-        line_data = line.split('\t')
+City.setFile(file_dir['city'])
+City.setProvinces(provinces)
+cities = City.readCity(province)
+cityCreater = CityCreater(cities)
+city = cityCreater.creater()
+print(city)
 
-        p = province()
-        p.setId(str(uuid.uuid1()).replace('-', ''))
-        p.setProvinceName(line_data[0])
-        p.setProvinceShortName(line_data[1])
+Sex.setFile(file_dir['sex'])
+sexes = Sex.readSex()
+sexCreater = SexCreater(sexes)
+sex = sexCreater.creater()
+print(sex)
 
-        provinces.append(p)
-    return provinces
+AgeDistribution.setFile(file_dir['age_distribution'])
+ageDs = AgeDistribution.readDistribution()
+birthdayCreater = BirthdayCreater(ageDs)
+birthday = birthdayCreater.creater()
+print(birthday)
 
+Nation.setFile(file_dir['nation'])
+nations = Nation.readNation()
+NationDistribution.setFile(file_dir['nation_distribution'])
+NationDistribution.setNations(nations)
+nationDs = NationDistribution.readDistribution()
+nationCreater = NationCreater(nationDs)
+nation = nationCreater.creater()
+print(nation)
 
-def readProvinceDistributions():
-    provinceMap = {}
-    for province in provinces:
-        provinceMap[province.getProvinceName()] = province
+IdNumberDistribution.setFile(file_dir['id_number_distribution'])
+IdNumberDistribution.setProvinces(provinces)
+idNumbers = IdNumberDistribution.readDistribution(province)
+idNumberCreater = IdNumberCreater(idNumbers)
+idNumber = idNumberCreater.creater(birthday, sex)
+print(idNumber)
 
-    province_distributions = list()
-    file_province_distribution = open(file_dir['province_distribution'], encoding='utf-8')
-    for line in file_province_distribution.readlines():
-        line = line.strip()
-        line_data = line.split('\t')
+LastName.setFile(file_dir['last_name'])
+lastNames = LastName.readLastName()
+LastNameDistribution.setFile(file_dir['last_name_distribution'])
+LastNameDistribution.setLastNames(lastNames)
+top100 = LastNameDistribution.readLastNameTop100()
+other = LastNameDistribution.readOtherLastName()
+lastNameCreater = LastNameCreater(top100, other)
+lastName = lastNameCreater.creater()
+print(lastName)
 
-        pd = province_distribution()
-        pd.setId(str(uuid.uuid1()).replace('-', ''))
-        province = line_data[0]
-        if provinceMap[province] is None:
-            raise Exception('no province: ', province)
-        pd.setProvinceName(province)
-        pd.setDistribution(line_data[1])
-
-        province_distributions.append(pd)
-    return province_distributions
-
-def readCities():
-    provinceMap = {}
-    for province in provinces:
-        provinceMap[province.getProvinceName()] = province
-
-    cities = list()
-    file_city = open(file_dir['city'], encoding='utf-8')
-    for line in file_city.readlines():
-        line = line.strip()
-        line_data = line.split('\t')
-
-        c = city()
-        c.setId(str(uuid.uuid1()).replace('-', ''))
-        c.setCityName(line_data[0])
-        province = line_data[1]
-        if provinceMap[province] is None:
-            raise Exception('no province: ', province)
-        c.setProvinceName(province)
-
-        cities.append(c)
-    return cities
-
-def readNations():
-    nations = list()
-    file_nation = open(file_dir['nation'], encoding='utf-8')
-    for line in file_nation.readlines():
-        line = line.strip()
-
-        n = nation()
-        n.setId(str(uuid.uuid1()).replace('-', ''))
-        n.setNationName(line)
-
-        nations.append(n)
-    return nations
-
-def readNationDistributions():
-    nationMap = {}
-    for nation in nations:
-        nationMap[nation.getNationName()] = nation
-
-    nation_distributions = list()
-    file_nation_distributions = open(file_dir['nation_distribution'], encoding='utf-8')
-    for line in file_nation_distributions.readlines():
-        line = line.strip()
-        line_data = line.split('\t')
-
-        nd = nation_distribution()
-        nd.setId(str(uuid.uuid1()).replace('-', ''))
-        nation = line_data[0]
-        if nationMap[nation] is None:
-            raise Exception('no nation: ', nation)
-        nd.setNationName(nation)
-        nd.setDistribution(line_data[1])
-
-        nation_distributions.append(nd)
-    return nation_distributions
-
-def readLastNames():
-    last_names = list()
-    file_last_name = open(file_dir['last_name'], encoding='utf-8')
-    for line in file_last_name.readlines():
-        line = line.strip()
-
-        n = last_name()
-        n.setId(str(uuid.uuid1()).replace('-', ''))
-        n.setLastName(line)
-
-        last_names.append(n)
-    return last_names
-
-def readLastNameDistributions():
-    lastNameMap = {}
-    for last_name in last_names:
-        lastNameMap[last_name.getLastName()] = last_name
-
-    last_name_distributions = list()
-    file_last_name_distributions = open(file_dir['last_name_distribution'], encoding='utf-8')
-    for line in file_last_name_distributions.readlines():
-        line = line.strip()
-        line_data = line.split('\t')
-
-        lnd = last_name_distribution()
-        lnd.setId(str(uuid.uuid1()).replace('-', ''))
-        last_name = line_data[0]
-        if lastNameMap[last_name] is None:
-            raise Exception('no last_name: ', last_name)
-        lnd.setLastName(last_name)
-        lnd.setDistribution(line_data[1])
-
-        last_name_distributions.append(lnd)
-    return last_name_distributions
-
-def readIdNumbers():
-    provinceMap = {}
-    for province in provinces:
-        provinceMap[province.getProvinceName()] = province
-
-    id_number_distributions = list()
-    file_id_number_distributions = open(file_dir['id_number_distribution'], encoding='utf-8')
-    for line in file_id_number_distributions.readlines():
-        line = line.strip()
-        line_data = line.split('\t')
-
-        ind = id_number_distribution()
-        ind.setId(str(uuid.uuid1()).replace('-', ''))
-        province = line_data[0]
-        if provinceMap[province] is None:
-            raise Exception('no province: ', province)
-        ind.setProvinceName(province)
-        ind.setIdNumber(line_data[1])
-
-        id_number_distributions.append(ind)
-    return id_number_distributions
-
-def readNameHanzi():
-    name_hanzi = list()
-    file_name_hanzi = open(file_dir['name_hanzi'], encoding='utf-8')
-    for line in file_name_hanzi.readlines():
-        line = line.strip()
-
-        name_hanzi.append(line)
-    return name_hanzi
-
-def readMalePerfectNameHanzi():
-    male_perfect_name_hanzi = list()
-    file_male_perfect_name_hanzi = open(file_dir['male_perfect'], encoding='utf-8')
-    for line in file_male_perfect_name_hanzi.readlines():
-        line = line.strip()
-
-        male_perfect_name_hanzi.append(line)
-    return male_perfect_name_hanzi
-
-def readFemalePerfectNameHanzi():
-    female_perfect_name_hanzi = list()
-    file_female_perfect_name_hanzi = open(file_dir['female_perfect'], encoding='utf-8')
-    for line in file_female_perfect_name_hanzi.readlines():
-        line = line.strip()
-
-        female_perfect_name_hanzi.append(line)
-    return female_perfect_name_hanzi
-
-
-provinces = readProvinces()
-province_distributions = readProvinceDistributions()
-cities = readCities()
-nations = readNations()
-nation_distributions = readNationDistributions()
-last_names = readLastNames()
-last_name_distributions = readLastNameDistributions()
-id_number_distributions = readIdNumbers()
-name_hanzi = readNameHanzi()
-male_perfect_name_hanzi = readMalePerfectNameHanzi()
-female_perfect_name_hanzi = readFemalePerfectNameHanzi()
-
-# for province in provinces:
-#     print(province.getProvinceName(), end=" ")
-#
 # print()
 # for city in cities:
 #     print(city.getCityName(), end=" ")
-#
-# print()
-# for nation in nations:
-#     print(nation.getNationName(), end=" ")
-#
-# print()
-# for last_name in last_names:
-#     print(last_name.getLastName(), end=" ")
-#
-# print()
-# for id_number in id_number_distributions:
-#     print(id_number.getIdNumber(), end=" ")
-
-# print()
-# for nh in name_hanzi:
-#     print(nh, end=" ")
-
-# print()
-# for nh in male_perfect_name_hanzi:
-#     print(nh, end=" ")
-
-print()
-for nh in female_perfect_name_hanzi:
-    print(nh, end=" ")
