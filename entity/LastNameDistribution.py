@@ -75,7 +75,7 @@ class LastNameDistribution:
 
         lnset = set()
         for ln in LastNameDistribution.lastNames:
-            lnset.add(ln)
+            lnset.add(ln.getLastName())
 
         lnset = lnset - top100
         for ln in lnset:

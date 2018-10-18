@@ -8,6 +8,10 @@ from entity.NationDistribution import *
 from entity.IdNumberDistribution import *
 from entity.LastName import *
 from entity.LastNameDistribution import *
+from entity.NameHanZi import *
+from entity.MalePerfectHanZi import *
+from entity.FemalePerfectHanZi import *
+from entity.Person import *
 
 from creater.ProvinceCreater import *
 from creater.CityCreater import *
@@ -16,6 +20,7 @@ from creater.BirthdayCreater import *
 from creater.NationCreater import *
 from creater.IdNumberCreater import *
 from creater.LastNameCreater import *
+from creater.NameCreater import *
 
 home = 'F:/git/people-py/resource/'
 work = 'D:/py/people-py/resource/'
@@ -43,26 +48,22 @@ ProvinceDistribution.setProvinces(provinces)
 provinceDs = ProvinceDistribution.readDistribution()
 provinceCreater = ProvinceCreater(provinceDs)
 province = provinceCreater.creater()
-print(province)
 
 City.setFile(file_dir['city'])
 City.setProvinces(provinces)
 cities = City.readCity(province)
 cityCreater = CityCreater(cities)
 city = cityCreater.creater()
-print(city)
 
 Sex.setFile(file_dir['sex'])
 sexes = Sex.readSex()
 sexCreater = SexCreater(sexes)
 sex = sexCreater.creater()
-print(sex)
 
 AgeDistribution.setFile(file_dir['age_distribution'])
 ageDs = AgeDistribution.readDistribution()
 birthdayCreater = BirthdayCreater(ageDs)
 birthday = birthdayCreater.creater()
-print(birthday)
 
 Nation.setFile(file_dir['nation'])
 nations = Nation.readNation()
@@ -71,14 +72,12 @@ NationDistribution.setNations(nations)
 nationDs = NationDistribution.readDistribution()
 nationCreater = NationCreater(nationDs)
 nation = nationCreater.creater()
-print(nation)
 
 IdNumberDistribution.setFile(file_dir['id_number_distribution'])
 IdNumberDistribution.setProvinces(provinces)
 idNumbers = IdNumberDistribution.readDistribution(province)
 idNumberCreater = IdNumberCreater(idNumbers)
 idNumber = idNumberCreater.creater(birthday, sex)
-print(idNumber)
 
 LastName.setFile(file_dir['last_name'])
 lastNames = LastName.readLastName()
@@ -88,7 +87,18 @@ top100 = LastNameDistribution.readLastNameTop100()
 other = LastNameDistribution.readOtherLastName()
 lastNameCreater = LastNameCreater(top100, other)
 lastName = lastNameCreater.creater()
-print(lastName)
+
+NameHanZi.setFile(file_dir['name_hanzi'])
+nameHanzis = NameHanZi.readNameHanZi()
+MalePerfectHanZi.setFile(file_dir['male_perfect'])
+malePerfect = MalePerfectHanZi.readPerfect()
+FemalePerfectHanZi.setFile(file_dir['female_perfect'])
+femalePerfect = FemalePerfectHanZi.readPerfect()
+nameCreater = NameCreater(nameHanzis, malePerfect, femalePerfect)
+name = nameCreater.creater(lastName, sex)
+
+person = Person(str(lastName) + str(name), sex, birthday, province, city, name, idNumber)
+print(person)
 
 # print()
 # for city in cities:

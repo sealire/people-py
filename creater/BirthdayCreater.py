@@ -26,9 +26,9 @@ class BirthdayCreater:
         rand = random.random()
         index = 0
         sum = 0
-        while True:
+        while index < len(self.__distribution):
             sum += self.__distribution[index].getDistribution()
-            if sum > rand or index >= len(self.__distribution):
+            if sum > rand:
                 break
             index += 1
 

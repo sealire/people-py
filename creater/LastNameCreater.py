@@ -14,9 +14,9 @@ class LastNameCreater:
         rand = random.random()
         index = 0
         sum = 0
-        while True:
+        while index < len(self.__top100_distribution):
             sum += self.__top100_distribution[index].getDistribution()
-            if sum > rand or index >= len(self.__top100_distribution):
+            if sum > rand:
                 break
             index += 1
 
