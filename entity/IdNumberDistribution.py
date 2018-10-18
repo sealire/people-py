@@ -38,7 +38,7 @@ class IdNumberDistribution:
         cls.provinces = provinces
 
     @classmethod
-    def readDistribution(cls, p):
+    def readDistribution(cls):
         if len(IdNumberDistribution.distribution) == 0:
             provinceMap = {}
             for province in IdNumberDistribution.provinces:
@@ -68,4 +68,4 @@ class IdNumberDistribution:
 
                 IdNumberDistribution.distribution[d.getProvinceName()] = lids
 
-        return IdNumberDistribution.distribution[p]
+        return IdNumberDistribution.distribution

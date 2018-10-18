@@ -6,11 +6,12 @@ class IdNumberCreater:
     def __init__(self, id_numbers):
         self.__id_numbers = id_numbers
 
-    def creater(self, birthday, sex):
+    def creater(self, birthday, sex, province):
         if len(self.__id_numbers) == 0:
             return ""
 
-        rand = random.randint(0, len(self.__id_numbers) - 1)
+        ids = self.__id_numbers[province]
+        rand = random.randint(0, len(ids) - 1)
 
         birthday = birthday.replace('-', '')
 
@@ -20,4 +21,4 @@ class IdNumberCreater:
             ss += 1
         police = 9 + random.randint(1, 90)
 
-        return self.__id_numbers[rand] + birthday + str(police) + str(ss) + str(random.randint(0, 9))
+        return ids[rand] + birthday + str(police) + str(ss) + str(random.randint(0, 9))

@@ -1,26 +1,5 @@
-from entity.Province import *
-from entity.ProvinceDistribution import *
-from entity.City import *
-from entity.Sex import *
-from entity.AgeDistribution import *
-from entity.Nation import *
-from entity.NationDistribution import *
-from entity.IdNumberDistribution import *
-from entity.LastName import *
-from entity.LastNameDistribution import *
-from entity.NameHanZi import *
-from entity.MalePerfectHanZi import *
-from entity.FemalePerfectHanZi import *
-from entity.Person import *
-
-from creater.ProvinceCreater import *
-from creater.CityCreater import *
-from creater.SexCreater import *
-from creater.BirthdayCreater import *
-from creater.NationCreater import *
-from creater.IdNumberCreater import *
-from creater.LastNameCreater import *
-from creater.NameCreater import *
+from creater.PersonCreater import *
+from creater.Writer import *
 
 home = 'F:/git/people-py/resource/'
 work = 'D:/py/people-py/resource/'
@@ -39,67 +18,20 @@ file_dir = {
     'name_hanzi': dir + 'name_hanzi.txt',
     'male_perfect': dir + 'male_perfect.txt',
     'female_perfect': dir + 'female_perfect.txt',
+    'person': dir + 'person.txt'
 }
 
-Province.setFile(file_dir['province'])
-provinces = Province.readProvince()
-ProvinceDistribution.setFile(file_dir['province_distribution'])
-ProvinceDistribution.setProvinces(provinces)
-provinceDs = ProvinceDistribution.readDistribution()
-provinceCreater = ProvinceCreater(provinceDs)
-province = provinceCreater.creater()
+personCreater = PersonCreater(file_dir)
+personCreater.init()
 
-City.setFile(file_dir['city'])
-City.setProvinces(provinces)
-cities = City.readCity(province)
-cityCreater = CityCreater(cities)
-city = cityCreater.creater()
-
-Sex.setFile(file_dir['sex'])
-sexes = Sex.readSex()
-sexCreater = SexCreater(sexes)
-sex = sexCreater.creater()
-
-AgeDistribution.setFile(file_dir['age_distribution'])
-ageDs = AgeDistribution.readDistribution()
-birthdayCreater = BirthdayCreater(ageDs)
-birthday = birthdayCreater.creater()
-
-Nation.setFile(file_dir['nation'])
-nations = Nation.readNation()
-NationDistribution.setFile(file_dir['nation_distribution'])
-NationDistribution.setNations(nations)
-nationDs = NationDistribution.readDistribution()
-nationCreater = NationCreater(nationDs)
-nation = nationCreater.creater()
-
-IdNumberDistribution.setFile(file_dir['id_number_distribution'])
-IdNumberDistribution.setProvinces(provinces)
-idNumbers = IdNumberDistribution.readDistribution(province)
-idNumberCreater = IdNumberCreater(idNumbers)
-idNumber = idNumberCreater.creater(birthday, sex)
-
-LastName.setFile(file_dir['last_name'])
-lastNames = LastName.readLastName()
-LastNameDistribution.setFile(file_dir['last_name_distribution'])
-LastNameDistribution.setLastNames(lastNames)
-top100 = LastNameDistribution.readLastNameTop100()
-other = LastNameDistribution.readOtherLastName()
-lastNameCreater = LastNameCreater(top100, other)
-lastName = lastNameCreater.creater()
-
-NameHanZi.setFile(file_dir['name_hanzi'])
-nameHanzis = NameHanZi.readNameHanZi()
-MalePerfectHanZi.setFile(file_dir['male_perfect'])
-malePerfect = MalePerfectHanZi.readPerfect()
-FemalePerfectHanZi.setFile(file_dir['female_perfect'])
-femalePerfect = FemalePerfectHanZi.readPerfect()
-nameCreater = NameCreater(nameHanzis, malePerfect, femalePerfect)
-name = nameCreater.creater(lastName, sex)
-
-person = Person(str(lastName) + str(name), sex, birthday, province, city, name, idNumber)
-print(person)
-
-# print()
-# for city in cities:
-#     print(city.getCityName(), end=" ")
+writer = Writer(file_dir['person'])
+total = 10000
+each = 1000
+for count in range(0, int(total / each)):
+    persons = list()
+    for num in range(0, each):
+        person = personCreater.creater()
+        persons.append(person)
+    writer.write(persons)
+    print('sleep 5s')
+    time.sleep(5)
