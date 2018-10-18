@@ -9,7 +9,8 @@ from entity.id_number_distribution import *
 import uuid
 
 home = 'F:/git/people-py/resource/'
-dir = home
+work = 'D:/py/people-py/resource/'
+dir = work
 file_dir = {
     'province': dir + 'province.txt',
     'province_distribution': dir + 'province_distribution.txt',
@@ -18,7 +19,10 @@ file_dir = {
     'nation_distribution': dir + 'nation_distribution.txt',
     'last_name': dir + 'last_name.txt',
     'last_name_distribution': dir + 'last_name_distribution.txt',
-    'id_number_distribution': dir + 'id_nubmer_distribution.txt'
+    'id_number_distribution': dir + 'id_nubmer_distribution.txt',
+    'name_hanzi': dir + 'name_hanzi.txt',
+    'male_perfect': dir + 'male_perfect.txt',
+    'female_perfect': dir + 'female_perfect.txt',
 }
 
 
@@ -174,6 +178,33 @@ def readIdNumbers():
         id_number_distributions.append(ind)
     return id_number_distributions
 
+def readNameHanzi():
+    name_hanzi = list()
+    file_name_hanzi = open(file_dir['name_hanzi'], encoding='utf-8')
+    for line in file_name_hanzi.readlines():
+        line = line.strip()
+
+        name_hanzi.append(line)
+    return name_hanzi
+
+def readMalePerfectNameHanzi():
+    male_perfect_name_hanzi = list()
+    file_male_perfect_name_hanzi = open(file_dir['male_perfect'], encoding='utf-8')
+    for line in file_male_perfect_name_hanzi.readlines():
+        line = line.strip()
+
+        male_perfect_name_hanzi.append(line)
+    return male_perfect_name_hanzi
+
+def readFemalePerfectNameHanzi():
+    female_perfect_name_hanzi = list()
+    file_female_perfect_name_hanzi = open(file_dir['female_perfect'], encoding='utf-8')
+    for line in file_female_perfect_name_hanzi.readlines():
+        line = line.strip()
+
+        female_perfect_name_hanzi.append(line)
+    return female_perfect_name_hanzi
+
 
 provinces = readProvinces()
 province_distributions = readProvinceDistributions()
@@ -183,22 +214,37 @@ nation_distributions = readNationDistributions()
 last_names = readLastNames()
 last_name_distributions = readLastNameDistributions()
 id_number_distributions = readIdNumbers()
+name_hanzi = readNameHanzi()
+male_perfect_name_hanzi = readMalePerfectNameHanzi()
+female_perfect_name_hanzi = readFemalePerfectNameHanzi()
 
-for province in provinces:
-    print(province.getProvinceName(), end=" ")
+# for province in provinces:
+#     print(province.getProvinceName(), end=" ")
+#
+# print()
+# for city in cities:
+#     print(city.getCityName(), end=" ")
+#
+# print()
+# for nation in nations:
+#     print(nation.getNationName(), end=" ")
+#
+# print()
+# for last_name in last_names:
+#     print(last_name.getLastName(), end=" ")
+#
+# print()
+# for id_number in id_number_distributions:
+#     print(id_number.getIdNumber(), end=" ")
+
+# print()
+# for nh in name_hanzi:
+#     print(nh, end=" ")
+
+# print()
+# for nh in male_perfect_name_hanzi:
+#     print(nh, end=" ")
 
 print()
-for city in cities:
-    print(city.getCityName(), end=" ")
-
-print()
-for nation in nations:
-    print(nation.getNationName(), end=" ")
-
-print()
-for last_name in last_names:
-    print(last_name.getLastName(), end=" ")
-
-print()
-for id_number in id_number_distributions:
-    print(id_number.getIdNumber(), end=" ")
+for nh in female_perfect_name_hanzi:
+    print(nh, end=" ")
