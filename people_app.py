@@ -25,13 +25,13 @@ personCreater = PersonCreater(file_dir)
 personCreater.init()
 
 writer = Writer(file_dir['person'])
-total = 10000
-each = 1000
+total = 4000000
+each = 5000
 for count in range(0, int(total / each)):
     persons = list()
     for num in range(0, each):
         person = personCreater.creater()
         persons.append(person)
     writer.write(persons)
-    print('sleep 5s')
-    time.sleep(5)
+    print('sleep 1s')
+    time.sleep(1)

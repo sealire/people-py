@@ -4,7 +4,7 @@ import uuid
 class City:
     file = ''
     provinces = list()
-    cities = list()
+    cities = {}
 
     def __init__(self):
         self.__id = None
@@ -52,12 +52,13 @@ class City:
         cls.provinces = provinces
 
     @classmethod
-    def readCity(cls, p=None):
+    def readCity(cls):
         if len(City.cities) == 0:
             provinceMap = {}
             for province in City.provinces:
                 provinceMap[province.getProvinceName()] = province
 
+            cs = list()
             file_city = open(City.file, encoding='utf-8')
             for line in file_city.readlines():
                 line = line.strip()
@@ -71,13 +72,15 @@ class City:
                     raise Exception('no province: ', province)
                 c.setProvinceName(province)
 
-                City.cities.append(c)
+                cs.append(c)
+            for city in cs:
+                cp = city.getProvinceName()
+                if cp in City.cities:
+                    cns = City.cities[cp]
+                    cns.append(city)
+                else:
+                    cns = list()
+                    cns.append(city)
+                    City.cities[cp] = cns
 
-        if p is None:
-            return City.cities
-        else:
-            cities = list()
-            for city in City.cities:
-                if city.getProvinceName() == p:
-                    cities.append(city)
-            return cities
+        return City.cities

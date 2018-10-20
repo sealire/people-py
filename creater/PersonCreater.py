@@ -93,5 +93,5 @@ class PersonCreater:
         idNumber = self.__idNumberCreater.creater(birthday, sex, province)
         lastName = self.__lastNameCreater.creater()
         name = self.__nameCreater.creater(lastName, sex)
-        person = Person(str(lastName) + str(name), sex, birthday, province, city, nation, idNumber)
+        person = Person(lastName, name, sex, birthday, province, city, nation, idNumber)
         return person

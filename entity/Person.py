@@ -2,9 +2,10 @@ import uuid
 
 
 class Person:
-    def __init__(self, name, sex, birthday, province, city, nation, idNumber):
+    def __init__(self, lastName, firstName, sex, birthday, province, city, nation, idNumber):
         self.__id = str(uuid.uuid1()).replace('-', '')
-        self.__name = name
+        self.__last_name = lastName
+        self.__first_name = firstName
         self.__sex = sex
         self.__birthday = birthday
         self.__province = province
@@ -18,11 +19,17 @@ class Person:
     def getId(self):
         return self.__id
 
-    def setName(self, name):
-        self.__name = name
+    def setLastName(self, lastName):
+        self.__last_name = lastName
 
-    def getName(self):
-        return self.__name
+    def getLastName(self):
+        return self.__last_name
+
+    def setFirstName(self, firstName):
+        self.__first_name = firstName
+
+    def getFirstName(self):
+        return self.__first_name
 
     def setSex(self, sex):
         self.__sex = sex
@@ -61,5 +68,6 @@ class Person:
         return self.__id_number
 
     def __str__(self):
-        return self.__name + "," + self.__sex + "," + self.__birthday + "," + self.__province + "," + self.__city + "," + self.__nation + "," + self.__id_number
+        return self.__last_name + "," + self.__first_name + "," + self.__sex + "," + self.__birthday + "," \
+               + self.__province + "," + self.__city + "," + self.__nation + "," + self.__id_number
 
