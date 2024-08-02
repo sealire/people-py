@@ -1,4 +1,4 @@
-class people:
+class People:
     def __init__(self):
         self.__id = None
         self.__name = None

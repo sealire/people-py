@@ -1,9 +1,9 @@
+import os
+
 from creater.PersonCreater import *
 from creater.Writer import *
 
-home = 'F:/git/people-py/resource/'
-work = 'D:/py/people-py/resource/'
-dir = home
+dir = os.getcwd() + '/resource/'
 file_dir = {
     'province': dir + 'province.txt',
     'province_distribution': dir + 'province_distribution.txt',
